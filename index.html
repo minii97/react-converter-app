@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="./styles.css" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Roboto:ital,wdth,wght@0,75..100,100..900;1,75..100,100..900&display=swap"
+      rel="stylesheet"
+    />
+
+    <title>Converter</title>
+  </head>
+  <body>
+    <div id="root"></div>
+  </body>
+  <script src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
+  <script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
+  <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+  <script type="text/babel">
+    // 분 <-> 시 변환
+    // cm <-> inch 변환
+
+    const root = ReactDOM.createRoot(document.getElementById('root'))
+
+    function TimeConverter() {
+      const [value, setValue] = React.useState(0)
+      const [isFlipped, setIsFlipped] = React.useState(false)
+      const onChange = (event) => setValue(event.target.value)
+      const reset = () => setValue(0)
+      const onFlip = () => {
+        setIsFlipped((prev) => !prev)
+        reset()
+      }
+
+      return (
+        <div className="converter">
+          <div className="converter-header">
+            <h3 className="subtitle">Minutes & Hours</h3>
+
+            <div className="btn-group">
+              <button className="btn" onClick={reset}>
+                Reset!
+              </button>
+              <button className="btn" onClick={onFlip}>
+                Flip!
+              </button>
+            </div>
+          </div>
+
+          <div className="input-group">
+            <div>
+              <label htmlFor="minutes">Minutes</label>
+              <input
+                id="minutes"
+                onChange={onChange}
+                value={isFlipped ? value * 60 : value}
+                placeholder="Minutes"
+                type="number"
+                disabled={isFlipped === true}
+              />
+            </div>
+            <div>
+              <label htmlFor="hours">Hours</label>
+              <input
+                id="hours"
+                onChange={onChange}
+                value={isFlipped ? value : value / 60}
+                placeholder="Hours"
+                type="number"
+                disabled={isFlipped === false}
+              />
+            </div>
+          </div>
+        </div>
+      )
+    }
+
+    function InchesConverter() {
+      const [value, setValue] = React.useState(0)
+      const [isFlipped, setIsFlipped] = React.useState(false)
+      const onChange = (event) => setValue(event.target.value)
+      const reset = () => setValue(0)
+      const onFlip = () => {
+        setIsFlipped((prev) => !prev)
+        reset()
+      }
+
+      return (
+        <div className="converter">
+          <div className="converter-header">
+            <h3 className="subtitle">Inches & Centimeters</h3>
+
+            <div className="btn-group">
+              <button className="btn" onClick={reset}>
+                Reset!
+              </button>
+              <button className="btn" onClick={onFlip}>
+                Flip!
+              </button>
+            </div>
+          </div>
+
+          <div className="input-group">
+            <div>
+              <label htmlFor="inches">Inches</label>
+              <input
+                id="inches"
+                onChange={onChange}
+                value={isFlipped ? value * 0.3937 : value}
+                placeholder="Inches"
+                type="number"
+                disabled={isFlipped === true}
+              />
+            </div>
+            <div>
+              <label htmlFor="centimeters">Centimeters</label>
+              <input
+                id="centimeters"
+                onChange={onChange}
+                value={isFlipped ? value : value * 2.54}
+                placeholder="Centimeters"
+                type="number"
+                disabled={isFlipped === false}
+              />
+            </div>
+          </div>
+        </div>
+      )
+    }
+
+    function App() {
+      const [option, setOption] = React.useState(0)
+      const onChange = (event) => setOption(event.target.value)
+      const reset = () => setOption(0)
+
+      return (
+        <div>
+          <div className="header-wrap">
+            <header className="header">
+              <h1 className="title">Converter</h1>
+
+              <button className="btn reset-btn" onClick={reset}>
+                Reset Your Option
+              </button>
+            </header>
+          </div>
+          <div className="container">
+            <select className="select" value={option} onChange={onChange}>
+              <option value="0">Select Your Unit</option>
+              <option value="1">Minutes & Hours</option>
+              <option value="2">Inches & Centimeters</option>
+            </select>
+
+            {option == 1 ? <TimeConverter /> : null}
+            {option == 2 ? <InchesConverter /> : null}
+
+            <div className="main-bg"></div>
+          </div>
+        </div>
+      )
+    }
+
+    root.render(<App />)
+  </script>
+</html>
